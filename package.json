@@ -1,0 +1,20 @@
+{
+  "name": "gdevjs",
+  "version": "0.0.1",
+  "description": "Game engine for NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Simone Ancona",
+  "license": "Apache-2.0",
+  "keywords": [
+    "game-engine",
+    "2d",
+    "graphics"
+  ],
+  "dependencies": {
+    "simply2d": "^1.2.1",
+    "typescript": "^5.1.6"
+  }
+}
