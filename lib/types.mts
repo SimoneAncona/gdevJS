@@ -1,5 +1,5 @@
 export type EntityType =
-    "textureEntity" | ""
+    "textureEntity" | "pathEntity" | "textEntity"
 
-export type EntityEvent =
+export type GameEvent =
     "onClick" | "onKeyDown"

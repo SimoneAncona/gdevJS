@@ -1,10 +1,10 @@
-import { EntityEvent, EntityType } from "./types.mjs";
+import { GameEvent, EntityType } from "./types.mjs";
 
 export class Entity {
     private _textures: { textureID: string, file: string }[];
     private _currentTexture: string;
     private _type: EntityType;
-    private _eventListener: { event: EntityEvent, callback: Function }[];
+    private _eventListener: { event: GameEvent, callback: Function }[];
 
     constructor(type: EntityType = "textureEntity") {
         this._textures = [];
@@ -59,12 +59,12 @@ export class Entity {
 
     /**
      * Add event listener
-     * @param {EntityEvent} event event type 
+     * @param {GameEvent} event event type 
      * @param {Function} callback the callback function
      * @since v0.0.1
      */
-    addEventListener(event: EntityEvent, callback: Function): void {
-
+    addEventListener(event: GameEvent, callback: Function): void {
+        this._eventListener.push({ event: event, callback: callback });
     }
 
     /**
@@ -74,6 +74,25 @@ export class Entity {
      */
     onClick(callback: (x: number, y: number) => void): void {
 
+    }
+
+    /**
+     * Get the event list
+     * @returns {Array} events
+     * @since v0.0.1
+     */
+    getEventListener(): { event: GameEvent, callback: Function }[] {
+        return this._eventListener;
+    }
+
+    addPath() {
+        throw "Not implemented yet";
+    }
+
+    addText() {
+        if (this._textures.length != 0 && this._type == "textureEntity")
+            throw "Cannot add text to a texture type entity";
+        throw "Not implemented yet";
     }
 }
 
