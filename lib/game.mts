@@ -1,6 +1,6 @@
 import { Canvas, CanvasOptions } from "simply2d";
 import { Entity } from "./entity.mjs";
-import { GameEvent } from "./types.mjs";
+import { EntityProperties, GameEvent } from "./types.mjs";
 
 export class Game extends Canvas {
     private _eventListener: { event: GameEvent, callback: Function }[];
@@ -28,7 +28,7 @@ export class Game extends Canvas {
      * Add a new entity into the current game
      * @param {string} entityID entity ID 
      * @param {Entity} entity the entity object
-     * @since v0.0.1 
+     * @since v0.0.2 
      */
     addEntity(entityID: string, entity: Entity) {
         for (let entity of this._entities) {
@@ -36,12 +36,21 @@ export class Game extends Canvas {
                 throw "Cannot add a new entity with the same id as another";
         }
         this._entities.push({ id: entityID, entity: entity });
+        switch (entity.getType()) {
+            case "textureEntity":
+                entity.getTextures().forEach(texture => this.loadTexture(entityID + "_" + texture.textureID, texture.file));
+                break;
+            case "textEntity":
+                break;
+            case "pathEntity":
+                break;
+        }
     }
 
     /**
      * Remove an entity from the game
      * @param {string} entityID the entity ID
-     * @since v0.0.1 
+     * @since v0.0.2 
      */
     removeEntity(entityID: string) {
         for (let i = 0; i < this._entities.length; i++) {
@@ -54,7 +63,7 @@ export class Game extends Canvas {
     /**
      * 
      * @param {Function} callback a function that takes x and y as arguments
-     * @since v0.0.1
+     * @since v0.0.2
      */
     onClick(callback: (x: number, y: number) => void): void {
         let bypassCallback = (x: number, y: number) => {
@@ -76,8 +85,44 @@ export class Game extends Canvas {
                 entity.getEventListener().filter(e => e.event === "onClick").forEach(e => e.callback(values[0], values[1]));
                 break;
             case "onKeyDown":
-                entity.getEventListener().filter(e => e.event === "onKeyDown").forEach(e => e.callback(values[0], values[1]));
+                entity.getEventListener().filter(e => e.event === "onKeyDown").forEach(e => e.callback(values[0]));
+                break;
+            case "onKeyUp":
+                entity.getEventListener().filter(e => e.event === "onKeyUp").forEach(e => e.callback(values[0]));
                 break;
         }
+    }
+
+    /**
+     * 
+     * @param {Function} callback a repeated drawing process
+     * @since v0.0.2
+     */
+    async loop(callback: () => void) {
+        let bypassCallback = () => {
+            this._renderEntities();
+            callback();
+        }
+        super.loop(bypassCallback);
+    }
+
+    private _renderEntities() {
+        for (let entity of this._entities) {
+            let properties = entity.entity.getProperties();
+            this._updatePhysics(properties);
+            switch (entity.entity.getType()) {
+                case "textureEntity":
+                    this.drawTexture(entity.id + "_" + entity.entity.getCurrentTexture(), { x: properties.x, y: properties.y });
+                    break;
+                case "textEntity":
+                    break;
+                case "pathEntity":
+                    break;
+            }
+        }
+    }
+
+    private _updatePhysics(entityProperties: EntityProperties) {
+
     }
 }
