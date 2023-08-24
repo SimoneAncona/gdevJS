@@ -1,5 +1,5 @@
 import { Canvas } from "simply2d";
 
-class Game extends Canvas {
+export class Game extends Canvas {
 
 }

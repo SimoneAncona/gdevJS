@@ -1,2 +1,2 @@
-# gdevJS
+# GdevJS
 Game engine for NodeJS

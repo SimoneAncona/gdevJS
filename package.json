@@ -4,6 +4,7 @@
   "description": "Game engine for NodeJS",
   "main": "index.js",
   "scripts": {
+    "build": "tsc --build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Simone Ancona",
@@ -14,6 +15,7 @@
     "graphics"
   ],
   "dependencies": {
+    "@types/node": "^20.5.4",
     "simply2d": "^1.2.1",
     "typescript": "^5.1.6"
   }
