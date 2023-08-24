@@ -1,6 +1,7 @@
 import { Canvas, CanvasOptions } from "simply2d";
 import { Entity } from "./entity.mjs";
 import { EntityProperties, GameEvent } from "./types.mjs";
+import { Key } from "simply2d/lib/types.js";
 
 export class Game extends Canvas {
     private _eventListener: { event: GameEvent, callback: Function }[];
@@ -22,6 +23,11 @@ export class Game extends Canvas {
         super(title, width, height, xPos, yPos, options);
         this._eventListener = [];
         this._entities = [];
+        this.onClick((x, y) => { });
+        this.onKeyDown((k) => { });
+        this.onKeyUp((k) => { });
+        this.onKeysDown((ks) => { });
+        this.onKeysUp((ks) => { });
     }
 
     /**
@@ -71,6 +77,32 @@ export class Game extends Canvas {
             callback(x, y);
         }
         super.onClick(bypassCallback);
+    }
+
+    /**
+     * 
+     * @param {Function} callback a function that takes the key as argument
+     * @since v0.0.2
+     */
+    onKeyDown(callback: (k: Key) => void): void {
+        let bypassCallback = (k: Key) => {
+            this._handleEntitiesEvent<Key>("onKeyDown", [k]);
+            callback(k);
+        }
+        super.onKeyDown(bypassCallback);
+    }
+
+    /**
+     * 
+     * @param {Function} callback a function that takes the key as argument
+     * @since v0.0.2
+     */
+    onKeyUp(callback: (k: Key) => void): void {
+        let bypassCallback = (k: Key) => {
+            this._handleEntitiesEvent<Key>("onKeyUp", [k]);
+            callback(k);
+        }
+        super.onKeyUp(bypassCallback);
     }
 
     private _handleEntitiesEvent<T>(event: GameEvent, values: Array<T>) {
@@ -124,5 +156,13 @@ export class Game extends Canvas {
 
     private _updatePhysics(entityProperties: EntityProperties) {
 
+    }
+
+    /**
+     * Start the game
+     * @since v0.0.2
+     */
+    start() {
+        this.loop(() => { });
     }
 }

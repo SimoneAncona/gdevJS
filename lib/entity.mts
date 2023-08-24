@@ -7,11 +7,9 @@ export class Entity {
     private _eventListener: { event: GameEvent, callback: Function }[];
     private _properties: EntityProperties;
 
-    constructor(type: EntityType = "textureEntity") {
-        this._textures = [];
-        this._type = type;
-        this._eventListener = [];
-        this._properties = {
+    constructor(
+        type: EntityType = "textureEntity",
+        properties: EntityProperties = {
             x: 0,
             y: 0,
             xspeed: 0,
@@ -20,8 +18,14 @@ export class Entity {
             show: true,
             friction: 1,
             gravity: 0,
-            collisions: true
+            collisions: true,
+            collideAtEdges: true
         }
+    ) {
+        this._textures = [];
+        this._type = type;
+        this._eventListener = [];
+        this._properties = properties;
     }
 
     /**
@@ -52,11 +56,20 @@ export class Entity {
     }
 
     /**
+     * Get the current texture id
+     * @returns {string} texture id
+     * @since v0.0.2
+     */
+    getCurrentTexture(): string {
+        return this._currentTexture;
+    }
+
+    /**
      * Get the current texture file path
      * @returns {string} texture file path
      * @since v0.0.2
      */
-    getCurrentTexture(): string {
+    getCurrentTexturePath(): string {
         return this._searchTexture(this._currentTexture);
     }
 
@@ -85,7 +98,7 @@ export class Entity {
      * @since v0.0.2 
      */
     onClick(callback: (x: number, y: number) => void): void {
-
+        this.addEventListener("onClick", callback);
     }
 
     /**
@@ -146,18 +159,31 @@ export class Entity {
     getTextures(): { textureID: string, file: string }[] {
         return this._textures;
     }
+
+    /**
+     * Move the entity on the x axis
+     * @param {number} x
+     * @since v0.0.2
+     */
+    moveX(x: number): void {
+        this._properties.x += x;
+    }
+
+    /**
+     * Move the entity on the y axis
+     * @param {number} y
+     * @since v0.0.2
+     */
+    moveY(y: number) {
+        this._properties.y += y;
+    }
+
+    /**
+     * Set gravity property
+     * @param {number} gravity 
+     * @since v0.0.2
+     */
+    setGravity(gravity: number): void {
+        this._properties.gravity = gravity;
+    }
 }
-
-export const PredefinedEntities = {
-    /**
-     * Button entity
-     * @since v0.0.2
-     */
-    BUTTON: new Entity(),
-
-    /**
-     * Player entity
-     * @since v0.0.2
-     */
-    PLAYER: new Entity()
-};
