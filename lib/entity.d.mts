@@ -5,7 +5,7 @@ export declare class Entity {
     private _type;
     private _eventListener;
     private _properties;
-    constructor(type?: EntityType);
+    constructor(type?: EntityType, properties?: EntityProperties);
     addTexture(textureID: string, filePath: string): void;
     setTexture(textureID: string): void;
     private _searchTexture;
@@ -29,4 +29,6 @@ export declare class Entity {
     }[];
     moveX(x: number): void;
     moveY(y: number): void;
+    setGravity(gravity: number): void;
+    setCollideOnEdges(collideOnEdges: boolean): void;
 }

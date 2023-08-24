@@ -19,7 +19,7 @@ export class Entity {
             friction: 1,
             gravity: 0,
             collisions: true,
-            collideAtEdges: true
+            collideOnEdges: true
         }
     ) {
         this._textures = [];
@@ -166,7 +166,7 @@ export class Entity {
      * @since v0.0.2
      */
     moveX(x: number): void {
-        this._properties.x += x;
+        this._properties.xspeed = x;
     }
 
     /**
@@ -175,7 +175,7 @@ export class Entity {
      * @since v0.0.2
      */
     moveY(y: number) {
-        this._properties.y += y;
+        this._properties.yspeed = y;
     }
 
     /**
@@ -185,5 +185,14 @@ export class Entity {
      */
     setGravity(gravity: number): void {
         this._properties.gravity = gravity;
+    }
+
+    /**
+     * Set collide on the edges property
+     * @param {boolean} collideOnEdges
+     * @since v0.0.2 
+     */
+    setCollideOnEdges(collideOnEdges: boolean): void {
+        this._properties.collideOnEdges = collideOnEdges;
     }
 }

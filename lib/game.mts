@@ -1,7 +1,7 @@
 import { Canvas, CanvasOptions } from "simply2d";
 import { Entity } from "./entity.mjs";
 import { EntityProperties, GameEvent } from "./types.mjs";
-import { Key } from "simply2d/lib/types.js";
+import { Key, Resolution } from "simply2d/lib/types.js";
 
 export class Game extends Canvas {
     private _eventListener: { event: GameEvent, callback: Function }[];
@@ -141,7 +141,7 @@ export class Game extends Canvas {
     private _renderEntities() {
         for (let entity of this._entities) {
             let properties = entity.entity.getProperties();
-            this._updatePhysics(properties);
+            this._updatePhysics(entity.id, entity.entity);
             switch (entity.entity.getType()) {
                 case "textureEntity":
                     this.drawTexture(entity.id + "_" + entity.entity.getCurrentTexture(), { x: properties.x, y: properties.y });
@@ -154,8 +154,34 @@ export class Game extends Canvas {
         }
     }
 
-    private _updatePhysics(entityProperties: EntityProperties) {
+    private _updatePhysics(entityID: string, entity: Entity) {
+        let entityProperties = entity.getProperties();
+        entityProperties.yspeed += entityProperties.gravity;
+        entityProperties.y += entityProperties.yspeed;
+        entityProperties.x += entityProperties.xspeed;
 
+        if (entityProperties.xspeed < 0) {
+            entityProperties.xspeed += entityProperties.friction;
+            if (entityProperties.xspeed > -entityProperties.friction)
+                entityProperties.xspeed = 0;
+        } else {
+            entityProperties.xspeed -= entityProperties.friction;
+            if (entityProperties.xspeed < entityProperties.friction)
+                entityProperties.xspeed = 0;
+        }
+
+        if (entityProperties.collideOnEdges) {
+            if (entityProperties.y < 0)
+                entityProperties.y = 0;
+            if (entityProperties.y > this.getHeight())
+                if (entity.getType() === "textureEntity")
+                    entityProperties.y = this.getHeight() - this.getTextureResolution(entityID + "_" + entity.getCurrentTexture()).h;
+            if (entityProperties.x < 0)
+                entityProperties.x = 0;
+            if (entityProperties.x > this.getWidth())
+                if (entity.getType() === "textureEntity")
+                    entityProperties.x = this.getWidth() - this.getTextureResolution(entityID + "_" + entity.getCurrentTexture()).w;
+        }
     }
 
     /**
@@ -164,5 +190,24 @@ export class Game extends Canvas {
      */
     start() {
         this.loop(() => { });
+    }
+
+    /**
+     * Get entity texture resolution
+     * @param {string} entityID the entity ID
+     * @returns {Resolution} a Resolution object
+     * @since v0.0.2
+     */
+    getEntityTextureResolution(entityID: string): Resolution {
+        let entity = this._searchEntity(entityID);
+        return this.getTextureResolution(entityID + "_" + entity.getCurrentTexture())
+    }
+
+    private _searchEntity(entityID: string) {
+        for (let entity of this._entities) {
+            if (entity.id === entityID) {
+                return entity.entity
+            }
+        }
     }
 }

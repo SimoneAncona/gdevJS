@@ -1,6 +1,6 @@
 import { Canvas, CanvasOptions } from "simply2d";
 import { Entity } from "./entity.mjs";
-import { Key } from "simply2d/lib/types.js";
+import { Key, Resolution } from "simply2d/lib/types.js";
 export declare class Game extends Canvas {
     private _eventListener;
     private _entities;
@@ -16,4 +16,6 @@ export declare class Game extends Canvas {
     private _renderEntities;
     private _updatePhysics;
     start(): void;
+    getEntityTextureResolution(entityID: string): Resolution;
+    private _searchEntity;
 }

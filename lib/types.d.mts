@@ -10,5 +10,5 @@ export type EntityProperties = {
     friction: number;
     gravity: number;
     collisions: boolean;
-    collideAtEdges: boolean;
+    collideOnEdges: boolean;
 };
