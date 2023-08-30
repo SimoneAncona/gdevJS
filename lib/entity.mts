@@ -195,4 +195,13 @@ export class Entity {
     setCollideOnEdges(collideOnEdges: boolean): void {
         this._properties.collideOnEdges = collideOnEdges;
     }
+
+    /**
+     * Set the friction property
+     * @param {number} friction
+     * @since v0.0.3 
+     */
+    setFriction(friction: number): void {
+        this._properties.friction = friction;
+    }
 }

@@ -36,7 +36,7 @@ export class Game extends Canvas {
      * @param {Entity} entity the entity object
      * @since v0.0.2 
      */
-    addEntity(entityID: string, entity: Entity) {
+    addEntity(entityID: string, entity: Entity): void {
         for (let entity of this._entities) {
             if (entity.id === entityID)
                 throw "Cannot add a new entity with the same id as another";
@@ -58,7 +58,7 @@ export class Game extends Canvas {
      * @param {string} entityID the entity ID
      * @since v0.0.2 
      */
-    removeEntity(entityID: string) {
+    removeEntity(entityID: string): void {
         for (let i = 0; i < this._entities.length; i++) {
             if (this._entities[i].id === entityID) {
                 this._entities.splice(i, 1);

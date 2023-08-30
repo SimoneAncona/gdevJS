@@ -1,8 +1,12 @@
 {
   "name": "gdevjs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Game engine for NodeJS",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SimoneAncona/gdevJS"
+  },
   "scripts": {
     "build": "tsc --build",
     "test": "echo \"Error: no test specified\" && exit 1"
